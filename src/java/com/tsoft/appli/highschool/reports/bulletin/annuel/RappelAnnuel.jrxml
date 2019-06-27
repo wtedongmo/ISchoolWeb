@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RappelAnnuel" language="groovy" pageWidth="185" pageHeight="224" columnWidth="175" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="012212ea-775e-446c-b794-a7e9cb3907eb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="code_annee" class="java.lang.Integer"/>
+	<parameter name="code_eleve" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select sum(note1)/sum(coef),sum(note2)/sum(coef),sum(note3)/sum(coef),sum(note4)/sum(coef),sum(note5)/sum(coef),sum(note6)/sum(coef) from (
+select coef.valeur as coef,n1.note*valeur as note1,n2.note*valeur as note2,
+n3.note*valeur as note3,n4.note*valeur as note4,n5.note*valeur as note5,n6.note*valeur as note6
+from Coefficient coef join Matiere m on (m.code=coef.code_matiere) join TypeMatiere tm on (tm.code=m.type) join Classe c on (c.code_serie=coef.code_serie) join EleveInscrit ei on (ei.code_classe=c.code) join Eleve e on (ei.code_eleve=e.code)   
+left join Notes n1 on (n1.code_eleveinscrit=ei.code and n1.code_coefficient=coef.code  and n1.code_sequence=1)  
+left join Notes n2 on (n2.code_eleveinscrit=ei.code and n2.code_coefficient=coef.code and n2.code_sequence=2)
+left join Notes n3 on (n2.code_eleveinscrit=ei.code and n2.code_coefficient=coef.code and n2.code_sequence=3)
+left join Notes n4 on (n2.code_eleveinscrit=ei.code and n2.code_coefficient=coef.code and n2.code_sequence=4)
+left join Notes n5 on (n2.code_eleveinscrit=ei.code and n2.code_coefficient=coef.code and n2.code_sequence=5)
+left join Notes n6 on (n2.code_eleveinscrit=ei.code and n2.code_coefficient=coef.code and n2.code_sequence=6)
+
+where e.code =$P{code_eleve}  and ei.code_annee=$P{code_annee} ) as req]]>
+	</queryString>
+	<field name="sum(note1)/sum(coef)" class="java.lang.Double"/>
+	<field name="sum(note2)/sum(coef)" class="java.lang.Double"/>
+	<field name="sum(note3)/sum(coef)" class="java.lang.Double"/>
+	<field name="sum(note4)/sum(coef)" class="java.lang.Double"/>
+	<field name="sum(note5)/sum(coef)" class="java.lang.Double"/>
+	<field name="sum(note6)/sum(coef)" class="java.lang.Double"/>
+	<title>
+		<band height="167">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="173" height="60" uuid="3abb482b-6c2f-47f8-ab96-67bde5a828f5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="173" height="20" uuid="629d266a-39c8-4bd6-84f6-05f5beb17eeb"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RAPPEL MOYENNE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="28" height="20" uuid="5f8535cb-e917-4c0d-8061-391bb28cdd22"/>
+				<text><![CDATA[Seq1]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="28" y="20" width="28" height="20" uuid="5ff6edce-2c4f-4163-a509-dcf93c23a9e9"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note1)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="63" y="20" width="28" height="20" uuid="9c6feaad-09c0-48fc-8184-c70a9f9c81a8"/>
+				<text><![CDATA[Seq2]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="91" y="20" width="28" height="20" uuid="f70773fa-7e4b-4f65-a37e-dd62ea4cc016"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note2)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="119" y="20" width="28" height="20" uuid="f7c0d19a-8215-4e96-98b0-3039803a8ffc"/>
+				<text><![CDATA[Seq3]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="147" y="20" width="28" height="20" uuid="416b9e9d-6fa8-468f-95fd-1ef9c3cbeb43"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note3)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="40" width="28" height="20" uuid="de880c7b-a4a2-4873-bc77-0db449089bbd"/>
+				<text><![CDATA[Seq4]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="28" y="40" width="28" height="20" uuid="d3f53e12-8c40-44a4-9cbf-47d5b50ef92f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note4)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="63" y="40" width="28" height="20" uuid="ad5f7f00-9226-423f-b8b9-a3f777d66569"/>
+				<text><![CDATA[Seq5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="40" width="28" height="20" uuid="a45713f9-6529-46f0-b60b-ee26d3f762de"/>
+				<text><![CDATA[Seq6]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="91" y="40" width="28" height="20" uuid="13fed2b9-13ea-4c59-a1e0-ffc00f975401"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note5)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="145" y="40" width="28" height="20" uuid="857ee9f3-484e-4176-9e72-db1041c7d9a5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum(note6)/sum(coef)}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="60" width="173" height="107" uuid="9df300d3-c250-4658-a0d9-04aa053b34cb"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="60" width="173" height="20" uuid="e676fcd7-8e32-4648-adf5-89112b9857b5"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DECISION CONSEIL CLASSE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="111" width="173" height="20" uuid="ceae19ec-5689-46ad-8327-bb733f8849f9"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[AUTRES OBSERVATIONS]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>
